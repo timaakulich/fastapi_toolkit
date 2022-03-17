@@ -19,9 +19,24 @@ class CRUDBase:
     def __init__(self, model):
         self.model = model
 
-    def _get_filtered_queryset(self, exp, filter_query):
+    @staticmethod
+    def _get_filtered_queryset(exp, filter_query):
         for query in filter_query:
             exp = exp.filter(query)
+        return exp
+
+    @staticmethod
+    def _get_paginated_queryset(exp, offset, limit):
+        if limit is not None:
+            exp = exp.limit(limit)
+        if offset is not None:
+            exp = exp.offset(offset)
+        return exp
+
+    @staticmethod
+    def _get_sorted_queryset(exp, order_by):
+        if order_by:
+            exp = exp.order_by(*order_by)
         return exp
 
     async def count(self, filter_query=tuple()):
@@ -42,19 +57,16 @@ class CRUDBase:
 
     async def list(
         self,
-        offset=0,
-        limit=100,
-        order_by=tuple(),
-        filter_query=tuple(),
+        offset: int = 0,
+        limit: int = 100,
+        order_by: tuple = tuple(),
+        filter_query: tuple = tuple(),
     ) -> tuple[list[ModelType], int]:
+
         queryset = select(self.model)
         queryset = self._get_filtered_queryset(queryset, filter_query)
-        if order_by:
-            queryset = queryset.order_by(*order_by)
-        if limit is not None:
-            queryset = queryset.limit(limit)
-        if offset is not None:
-            queryset = queryset.offset(offset)
+        queryset = self._get_sorted_queryset(queryset, order_by)
+        queryset = self._get_paginated_queryset(queryset, offset, limit)
 
         async with create_session() as session:
             items = (await session.execute(queryset)).scalars()

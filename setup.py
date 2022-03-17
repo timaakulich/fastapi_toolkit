@@ -10,7 +10,7 @@ with open(FILE_NAME) as file:
     version = file.read()
 
 with open('requirements.txt') as file:
-    requirements = file.readlines()[4:]
+    requirements = file.readlines()
 
 with open('README.md', encoding='utf-8') as f:
     long_description = f.read()
@@ -27,5 +27,10 @@ setup(
     packages=find_packages(),
     install_requires=requirements,
     include_package_data=True,
-    zip_safe=False
+    zip_safe=False,
+    entry_points={
+        'console_scripts': [
+            'fastapi-toolkit = fastapi_toolkit.console_scripts:main'
+        ]
+    },
 )

@@ -1,9 +1,12 @@
-from typing import List, Union
+from typing import (
+    List,
+    Union,
+)
 
 from pydantic import (
-    create_model,
+    BaseModel,
     Field,
-    BaseModel
+    create_model,
 )
 
 

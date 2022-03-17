@@ -1,3 +1,5 @@
+import abc
+
 from fastapi import Query
 
 __all__ = (
@@ -9,29 +11,34 @@ __all__ = (
 
 class BasePagination:
     @property
-    def db_params(self) -> dict:
-        raise NotImplementedError
+    @abc.abstractmethod
+    def database_params(self) -> dict:
+        ...
 
     @property
+    @abc.abstractmethod
     def params(self) -> dict:
-        raise NotImplementedError
+        ...
 
-    def _get_positive_or_default(self, value, default=None):
-        if value > 0:
-            return value
-        return default
+    @staticmethod
+    def _get_param(value: int, default: int = None):
+        return value if value > 0 else default
 
 
 class PageNumberPagination(BasePagination):
-    def __init__(self, page: int = Query(1), page_size: int = Query(10)):
+    def __init__(
+            self,
+            page: int = Query(1),
+            page_size: int = Query(10)
+    ):
         self.page = page
         self.page_size = page_size
 
     @property
-    def db_params(self) -> dict:
+    def database_params(self) -> dict:
         return {
-            'offset': self._get_positive_or_default((self.page - 1) * self.page_size, 0),  # noqa
-            'limit': self._get_positive_or_default(self.page_size)
+            'offset': self._get_param((self.page - 1) * self.page_size, 0),
+            'limit': self._get_param(self.page_size)
         }
 
     @property
@@ -43,17 +50,21 @@ class PageNumberPagination(BasePagination):
 
 
 class LimitOffsetPagination(BasePagination):
-    def __init__(self, offset: int = Query(0), limit: int = Query(10)):
+    def __init__(
+            self,
+            offset: int = Query(0),
+            limit: int = Query(10)
+    ):
         self.offset = offset
         self.limit = limit
 
     @property
-    def db_params(self):
+    def database_params(self):
         return {
-            'offset': self._get_positive_or_default(self.offset, 0),
-            'limit': self._get_positive_or_default(self.limit)
+            'offset': self._get_param(self.offset, 0),
+            'limit': self._get_param(self.limit)
         }
 
     @property
     def params(self):
-        return self.db_params
+        return self.database_params

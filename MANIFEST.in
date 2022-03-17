@@ -1,1 +1,2 @@
 include requirements.txt VERSION
+recursive-include fastapi_toolkit/project_template/*

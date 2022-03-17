@@ -40,16 +40,15 @@ def filter_by_fields(available_fields: Dict[str, filter_type]):
     def filter_query(self):
         _filter_query = []
         for _field in self.__dataclass_fields__:
-            value = getattr(self, _field)
-            if value is None:
+            if value := getattr(self, _field, None) is None:
                 continue
             if isinstance(value, datetime):
                 value = value.replace(tzinfo=None)
-            field_name, operator = _field.rsplit('__', 1)
-            cast_type = available_fields[field_name].cast_type
+            _field_name, operator = _field.rsplit('__', 1)
+            cast_type = available_fields[_field_name].cast_type
             _filter_query.append(
-                available_fields[field_name].operators[operator](
-                    cast_type(available_fields[field_name].field),
+                available_fields[_field_name].operators[operator](
+                    cast_type(available_fields[_field_name].field),
                     cast_type(value)
                 )
             )

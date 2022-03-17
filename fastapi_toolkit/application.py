@@ -15,6 +15,8 @@ __all__ = (
     'app',
 )
 
+from fastapi_toolkit.schemas.application_info import ApplicationInfo
+
 
 def custom_openapi(app):
     if app.openapi_schema:
@@ -32,8 +34,8 @@ def custom_openapi(app):
 debug_router = APIRouter()
 
 
-@debug_router.get('/')
-def root():
+@debug_router.get('/', response_model=ApplicationInfo)
+def application_info():
     """Returns application info"""
 
     return {
