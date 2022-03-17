@@ -1,11 +1,33 @@
-from typing import List
+from typing import List, Union
 
-from pydantic import create_model
+from pydantic import (
+    create_model,
+    Field,
+    BaseModel
+)
+
+
+class BaseMeta(BaseModel):
+    count: int
+
+
+class PageNumberPagination(BaseMeta):
+    page: int = Field(..., gt=0)
+    page_size: int = Field(..., gt=0)
+
+
+class LimitOffsetPagination(BaseMeta):
+    limit: int = Field(..., gt=0)
+    offset: int = Field(..., gt=0)
+
+
+class Meta(BaseModel):
+    __root__: Union[LimitOffsetPagination, PageNumberPagination]
 
 
 def pagination_model(model, prefix=''):
     return create_model(
         f'{prefix}Pagination{model.__name__}',
-        meta=(dict, ...),
+        meta=(Meta, ...),
         result=(List[model], ...)
     )
