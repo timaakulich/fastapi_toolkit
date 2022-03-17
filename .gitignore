@@ -1,0 +1,10 @@
+.idea
+*.pyc
+.DS_Store
+node_modules
+sdist
+*.egg-info
+*.egg
+build/*
+dist/*
+.tox
