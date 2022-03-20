@@ -1,6 +1,8 @@
 from contextlib import asynccontextmanager
+from typing import Optional
 
 from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
     AsyncSession,
     create_async_engine,
 )
@@ -12,30 +14,39 @@ from fastapi_toolkit.db.base_class import BaseModel
 __all__ = (
     'create_session',
     'BaseModel',
-    'init_db'
+    'init_db',
+    'create_engine',
 )
 
 
-_engine = None
-_Session: sessionmaker
+_engine: Optional[AsyncEngine] = None
+_Session: Optional[sessionmaker] = None
+
+
+def create_engine() -> AsyncEngine:
+    global _engine
+
+    if not _engine:
+        _engine = create_async_engine(
+            settings.database_dsn,
+            pool_pre_ping=True
+        )
+
+    return _engine
 
 
 def init_db():
-    global _engine
-    if _engine:
-        return
     global _Session
-    _engine = create_async_engine(
-        settings.database_dsn,
-        pool_pre_ping=True
-    )
-    _Session = sessionmaker(
-        # autocommit=False,
-        # autoflush=False,
-        bind=_engine,
-        expire_on_commit=False,
-        class_=AsyncSession
-    )
+    create_engine()
+
+    if not _Session:
+        _Session = sessionmaker(
+            # autocommit=False,
+            # autoflush=False,
+            bind=_engine,
+            expire_on_commit=False,
+            class_=AsyncSession
+        )
 
 
 @asynccontextmanager
