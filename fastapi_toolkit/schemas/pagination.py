@@ -21,7 +21,7 @@ class PageNumberPagination(BaseMeta):
 
 class LimitOffsetPagination(BaseMeta):
     limit: int = Field(None, gt=0)
-    offset: int = Field(None, gt=0)
+    offset: int = Field(None, ge=0)
 
 
 class Meta(BaseModel):

@@ -8,6 +8,11 @@ __all__ = (
     'LimitOffsetPagination',
 )
 
+from fastapi_toolkit.schemas.pagination import (
+    LimitOffsetPagination as LimitOffsetPaginationSchema,
+    PageNumberPagination as PageNumberPaginationSchema,
+)
+
 
 class BasePagination:
     @property
@@ -18,6 +23,11 @@ class BasePagination:
     @property
     @abc.abstractmethod
     def params(self) -> dict:
+        ...
+
+    @property
+    @abc.abstractmethod
+    def schema(self):
         ...
 
     @staticmethod
@@ -48,6 +58,10 @@ class PageNumberPagination(BasePagination):
             'page_size': self.page_size
         }
 
+    @property
+    def schema(self):
+        return PageNumberPaginationSchema
+
 
 class LimitOffsetPagination(BasePagination):
     def __init__(
@@ -68,3 +82,7 @@ class LimitOffsetPagination(BasePagination):
     @property
     def params(self):
         return self.database_params
+
+    @property
+    def schema(self):
+        return LimitOffsetPaginationSchema

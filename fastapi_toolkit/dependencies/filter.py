@@ -40,7 +40,7 @@ def filter_by_fields(available_fields: Dict[str, filter_type]):
     def filter_query(self):
         _filter_query = []
         for _field in self.__dataclass_fields__:
-            if value := getattr(self, _field, None) is None:
+            if (value := getattr(self, _field, None)) is None:
                 continue
             if isinstance(value, datetime):
                 value = value.replace(tzinfo=None)
