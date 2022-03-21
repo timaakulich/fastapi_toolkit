@@ -10,5 +10,4 @@ def test(directory: str = typer.Option('')):
         'pytest',
         directory,
         '-s',
-        '--asyncio-mode=strict'])
-    )
+    ]))
