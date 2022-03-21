@@ -15,13 +15,13 @@ class BaseMeta(BaseModel):
 
 
 class PageNumberPagination(BaseMeta):
-    page: int = Field(..., gt=0)
-    page_size: int = Field(..., gt=0)
+    page: int = Field(None, gt=0)
+    page_size: int = Field(None, gt=0)
 
 
 class LimitOffsetPagination(BaseMeta):
-    limit: int = Field(..., gt=0)
-    offset: int = Field(..., gt=0)
+    limit: int = Field(None, gt=0)
+    offset: int = Field(None, gt=0)
 
 
 class Meta(BaseModel):
