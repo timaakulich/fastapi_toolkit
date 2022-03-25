@@ -27,9 +27,10 @@ def _get_model_name(model_class: Union[CRUDBase, Type[BaseModel]]) -> str:
 
 async def get_object_or_404(
         crud: CRUDBase,
-        condition=None
+        condition=None,
+        session=None
 ) -> ModelType:
-    obj = await crud.get(condition)
+    obj = await crud.get(condition, session=session)
     if not obj:
         raise HTTPException(
             statuses.HTTP_404_NOT_FOUND,

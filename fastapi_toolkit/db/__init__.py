@@ -50,7 +50,11 @@ def init_db():
 
 
 @asynccontextmanager
-async def create_session():
+async def create_session(session=None, **kwargs):
     init_db()
-    async with _Session() as session:  # noqa
+    if session:
+        yield session
+        return
+
+    async with _Session(**kwargs) as session:  # noqa
         yield session
