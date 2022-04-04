@@ -18,3 +18,6 @@ class BaseModel:
     @declared_attr
     def __tablename__(cls) -> str:
         return cls.__name__.lower()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
