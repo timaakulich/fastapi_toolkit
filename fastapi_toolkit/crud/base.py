@@ -115,6 +115,7 @@ class CRUDBase:
         async with create_session(session) as session:
             await session.merge(db_obj)
             await session.commit()
+            await session.refresh(db_obj)
         return db_obj
 
     async def delete(self, condition, session=None):
