@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import (
     declared_attr,
 )
 
-__any__ = (
+__all__ = (
     'BaseModel',
 )
 
