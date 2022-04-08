@@ -15,5 +15,6 @@ exclude_lines =
     raise NotImplementedError
     __all__ =
     import
+    @(abc\.)?abstractmethod
 
 skip_empty = True

@@ -8,9 +8,6 @@ from typing import (
 from fastapi import Query
 
 from fastapi_toolkit.filters import filter_type
-
-__all__ = ('filter_by_fields',)
-
 from fastapi_toolkit.filters.func import (
     LIST_OPERATORS,
     OPERATORS_TYPES,
@@ -21,11 +18,11 @@ def filter_by_fields(available_fields: Dict[str, filter_type]):
     field_definitions = []
     for field_name, field_filter in available_fields.items():
         for operator_name, operator_func in field_filter.operators.items():
-            is_list = operator_name in LIST_OPERATORS
+            is_list = operator_func in LIST_OPERATORS
             field_type = (
                 OPERATORS_TYPES.get(operator_name)
-                or field_filter.query_param_type  # noqa
-                or field_filter.field.type.python_type  # noqa
+                or field_filter.query_param_type
+                or field_filter.field.type.python_type
             )
             name = f'{field_name}__{operator_name}'
             field_definitions.append(

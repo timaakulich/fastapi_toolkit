@@ -19,5 +19,5 @@ class BaseModel:
     def __tablename__(cls) -> str:
         return cls.__name__.lower()
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):  # pragma: no cover
         super().__init__(*args, **kwargs)
