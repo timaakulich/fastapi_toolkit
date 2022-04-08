@@ -14,7 +14,7 @@ from typing import (
 from starlette.concurrency import run_in_threadpool
 
 __all__ = (
-    "repeat_every",
+    'repeat_every',
 )
 
 NoArgsNoReturnFuncT = Callable[[], None]
@@ -51,7 +51,7 @@ def repeat_every(
                         repetitions += 1
                     except Exception as exc:
                         if logger is not None:
-                            formatted_exception = "".join(format_exception(
+                            formatted_exception = ''.join(format_exception(
                                 type(exc), exc, exc.__traceback__
                             ))
                             logger.error(formatted_exception)

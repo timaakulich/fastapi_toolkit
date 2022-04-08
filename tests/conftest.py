@@ -1,6 +1,7 @@
 import os
 
 import pytest
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from tests.mixer import AsyncMixer
 
@@ -30,6 +31,11 @@ async def db():
 
 
 @pytest.fixture
-async def mixer(db):
+async def session(db) -> AsyncSession:
     async with create_session() as session:
-        yield AsyncMixer(session)
+        yield session
+
+
+@pytest.fixture
+async def mixer(session) -> AsyncMixer:
+    yield AsyncMixer(session)
