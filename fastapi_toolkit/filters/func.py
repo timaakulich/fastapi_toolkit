@@ -20,7 +20,7 @@ def lt(x, y):
 
 
 def eq(x, y):
-    return x == x.type.python_type(y)
+    return x == y
 
 
 def like(x, y):

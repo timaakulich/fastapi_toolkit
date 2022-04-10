@@ -20,7 +20,7 @@ def filter_by_fields(available_fields: Dict[str, filter_type]):
         for operator_name, operator_func in field_filter.operators.items():
             is_list = operator_func in LIST_OPERATORS
             field_type = (
-                OPERATORS_TYPES.get(operator_name)
+                OPERATORS_TYPES.get(operator_func)
                 or field_filter.query_param_type
                 or field_filter.field.type.python_type
             )
@@ -45,7 +45,7 @@ def filter_by_fields(available_fields: Dict[str, filter_type]):
             cast_type = available_fields[_field_name].cast_type
             _filter_query.append(
                 available_fields[_field_name].operators[operator](
-                    cast_type(available_fields[_field_name].field),
+                    available_fields[_field_name].field,
                     cast_type(value)
                 )
             )
