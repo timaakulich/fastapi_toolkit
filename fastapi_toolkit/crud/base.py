@@ -110,10 +110,10 @@ class CRUDBase:
     ) -> ModelType:
         if obj_in:
             update_data = obj_in.dict(exclude_unset=True)
-        for k, v in update_data.items():
-            setattr(db_obj, k, v)
         async with create_session(session) as session:
             await session.merge(db_obj)
+            for k, v in update_data.items():
+                setattr(db_obj, k, v)
             await session.commit()
             await session.refresh(db_obj)
         return db_obj
@@ -130,6 +130,6 @@ class CRUDBase:
         async with create_session(session) as session:
             obj = await self.get(condition, session)
             if obj is None:
-                obj = await self.create(**defaults)
+                obj = await self.create(**defaults, session=session)
                 created = True
         return obj, created
