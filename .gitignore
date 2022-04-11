@@ -8,3 +8,7 @@ sdist
 build/*
 dist/*
 .tox
+.htmlcov
+.pytest_cache
+.coverage.xml
+.coverage

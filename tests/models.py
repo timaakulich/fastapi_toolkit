@@ -13,4 +13,5 @@ __all__ = (
 
 class Book(BaseModel):
     id = Column(Integer, primary_key=True)
-    name = Column(String(length=42))
+    title = Column(String(length=42), nullable=False)
+    page_amount = Column(Integer, nullable=False)

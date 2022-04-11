@@ -1,0 +1,20 @@
+[run]
+source =
+    .
+omit =
+    .tox/*
+    tests/*
+    setup.py
+    fastapi_toolkit/logging.py
+    fastapi_toolkit/management/*
+    fastapi_toolkit/console_scripts.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    raise NotImplementedError
+    __all__ =
+    import
+    @(abc\.)?abstractmethod
+
+skip_empty = True
