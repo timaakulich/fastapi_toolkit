@@ -9,3 +9,5 @@ orjson~=3.6.7
 SQLAlchemy~=1.4.28
 uvicorn~=0.15.0
 greenlet~=1.1.2
+newrelic~=7.10.0.175
+sentry-sdk~=1.5.9

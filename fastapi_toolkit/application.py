@@ -45,7 +45,8 @@ def application_info():
             'hash': settings.git_hash,
             'branch': settings.git_branch
         },
-        'datetime': datetime.utcnow().isoformat()
+        'datetime': datetime.utcnow().isoformat(),
+        'environment': settings.environment
     }
 
 

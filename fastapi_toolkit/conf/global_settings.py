@@ -14,6 +14,7 @@ PortType = Union[str, int]
 
 
 class GlobalSettings(BaseSettings):
+    environment: str = 'local'
     project: str = None
     debug: bool = False
     version: str = None
@@ -36,6 +37,11 @@ class GlobalSettings(BaseSettings):
     git_hash: str = 'local'
 
     tag_groups: list[dict] = Field(default_factory=list)
+
+    sentry_enabled: bool = True
+    sentry_dsn: str = None
+
+    new_relic_enabled: bool = True
 
     @property
     def logging(self) -> dict:

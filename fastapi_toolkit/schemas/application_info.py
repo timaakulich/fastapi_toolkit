@@ -10,4 +10,5 @@ class ApplicationInfo(BaseModel):
     project: str = None
     version: str = None
     datetime: str
+    environment: str
     git: ApplicationInfoGit
