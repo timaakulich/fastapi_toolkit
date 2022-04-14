@@ -6,6 +6,7 @@ from sqlalchemy import (
     func,
     select,
 )
+from sqlalchemy.dialects.postgresql import insert
 
 from fastapi_toolkit.db import create_session
 from fastapi_toolkit.db.base_class import BaseModel as Model
@@ -130,6 +131,14 @@ class CRUDBase:
         async with create_session(session) as session:
             obj = await self.get(condition, session)
             if obj is None:
-                obj = await self.create(**defaults, session=session)
+                orm_stmt = select(self.model).from_statement(
+                    insert(self.model).values(
+                        **defaults
+                    ).on_conflict_do_nothing().returning(self.model)
+                ).execution_options(populate_existing=True)
+                obj = (await session.execute(orm_stmt)).scalar()
+                await session.commit()
+                if not obj:
+                    obj = self.model(**defaults)
                 created = True
         return obj, created
