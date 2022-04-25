@@ -138,7 +138,8 @@ class CRUDBase:
                 ).execution_options(populate_existing=True)
                 obj = (await session.execute(orm_stmt)).scalar()
                 await session.commit()
+                # sometimes previous statement doesn't return inserted object
                 if not obj:
-                    obj = self.model(**defaults)
+                    obj = await self.get(condition, session)
                 created = True
         return obj, created
