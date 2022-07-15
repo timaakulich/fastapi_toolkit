@@ -43,6 +43,9 @@ class GlobalSettings(BaseSettings):
 
     new_relic_enabled: bool = True
 
+    redis_dsn: AnyUrl = None
+    redis_max_connections: int = 10
+
     @property
     def logging(self) -> dict:
         return {
