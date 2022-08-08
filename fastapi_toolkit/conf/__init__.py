@@ -17,14 +17,14 @@ class Settings:
 
     @classmethod
     @lru_cache
-    def load(cls):
+    def load(cls, *args, **kwargs):
         settings_module = os.environ.get(cls.ENVIRONMENT_VARIABLE)
         if settings_module:
             module = importlib.import_module(settings_module)
             application_settings_class = getattr(module, 'Settings')
-            _settings = application_settings_class()
+            _settings = application_settings_class(*args, **kwargs)
         else:
-            _settings = GlobalSettings()
+            _settings = GlobalSettings(*args, **kwargs)
         set_up_logging(_settings)
         return _settings
 
