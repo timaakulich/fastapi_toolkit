@@ -126,7 +126,13 @@ class CRUDBase:
             )
             await session.commit()
 
-    async def get_or_create(self, condition, session=None, **defaults):
+    async def get_or_create(
+            self,
+            condition,
+            session=None,
+            commit=True,
+            **defaults
+    ):
         created = False
         async with create_session(session) as session:
             obj = await self.get(condition, session)
@@ -137,7 +143,8 @@ class CRUDBase:
                     ).on_conflict_do_nothing().returning(self.model)
                 ).execution_options(populate_existing=True)
                 obj = (await session.execute(orm_stmt)).scalar()
-                await session.commit()
+                if commit:
+                    await session.commit()
                 # sometimes previous statement doesn't return inserted object
                 if not obj:
                     obj = await self.get(condition, session)
