@@ -82,7 +82,7 @@ class GlobalSettings(BaseSettings):
                 'uvicorn.error': {
                     'level': 'INFO'
                 },
-                'uvicorn': {
+                'uvicorn.access': {
                     'handlers': ['access'],
                     'level': 'INFO',
                     'propagate': False

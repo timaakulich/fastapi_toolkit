@@ -87,6 +87,7 @@ class CRUDBase:
             obj_in: CreateSchemaType = None,
             additional_data: dict = None,
             session=None,
+            commit=True,
             **data,
     ) -> ModelType:
         if obj_in:
@@ -98,8 +99,9 @@ class CRUDBase:
         )
         async with create_session(session) as session:
             session.add(item)
-            await session.commit()
-            await session.refresh(item)
+            if commit:
+                await session.commit()
+                await session.refresh(item)
         return item
 
     async def update(
@@ -107,6 +109,7 @@ class CRUDBase:
             db_obj: ModelType,
             obj_in: UpdateSchemaType = None,
             session=None,
+            commit=True,
             **update_data
     ) -> ModelType:
         if obj_in:
@@ -115,16 +118,18 @@ class CRUDBase:
             await session.merge(db_obj)
             for k, v in update_data.items():
                 setattr(db_obj, k, v)
-            await session.commit()
-            await session.refresh(db_obj)
+            if commit:
+                await session.commit()
+                await session.refresh(db_obj)
         return db_obj
 
-    async def delete(self, condition, session=None):
+    async def delete(self, condition, session=None, commit=True):
         async with create_session(session) as session:
             await session.execute(
                 delete(self.model).filter(condition)
             )
-            await session.commit()
+            if commit:
+                await session.commit()
 
     async def get_or_create(
             self,

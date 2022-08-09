@@ -1,9 +1,8 @@
+import logging
 from contextlib import asynccontextmanager
 from typing import ContextManager
 
-
 import aioredis
-import logging
 
 from fastapi_toolkit.conf import settings
 
