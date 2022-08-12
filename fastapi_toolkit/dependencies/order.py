@@ -27,6 +27,6 @@ def order_by_fields(available_fields: dict, default=None):
 
         _order_by = tuple(result_fields)
         if not _order_by and default is not None:
-            _order_by = (default,)
+            _order_by = (default,) if not isinstance(default, tuple) else default  # noqa
         return _order_by
     return order_dependence
