@@ -60,6 +60,9 @@ class CRUDBase:
                 select(self.model).filter(condition)
             )).scalars().first()
 
+    def select(self):
+        return select(self.model)
+
     async def list(
             self,
             offset: int = 0,
@@ -70,7 +73,7 @@ class CRUDBase:
             session=None
     ) -> tuple[list[ModelType], int]:
 
-        queryset = select(self.model)
+        queryset = self.select()
         queryset = self._get_filtered_queryset(queryset, filter_query)
         queryset = self._get_sorted_queryset(queryset, order_by)
         queryset = self._get_paginated_queryset(queryset, offset, limit)
