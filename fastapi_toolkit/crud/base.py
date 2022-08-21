@@ -43,8 +43,11 @@ class CRUDBase:
             exp = exp.order_by(*order_by)
         return exp
 
+    def join(self, query):
+        return query
+
     async def count(self, filter_query=tuple(), session=None):
-        queryset = select(func.count(self.get_model_id()))
+        queryset = self.join(select(func.count(self.get_model_id())))
         queryset = self._get_filtered_queryset(queryset, filter_query)
         async with create_session(session) as session:
             count = (await session.execute(queryset)).scalar()
@@ -60,9 +63,6 @@ class CRUDBase:
                 select(self.model).filter(condition)
             )).scalars().first()
 
-    def select(self):
-        return select(self.model)
-
     async def list(
             self,
             offset: int = 0,
@@ -73,7 +73,7 @@ class CRUDBase:
             session=None
     ) -> tuple[list[ModelType], int]:
 
-        queryset = self.select()
+        queryset = self.join(select(self.model))
         queryset = self._get_filtered_queryset(queryset, filter_query)
         queryset = self._get_sorted_queryset(queryset, order_by)
         queryset = self._get_paginated_queryset(queryset, offset, limit)
