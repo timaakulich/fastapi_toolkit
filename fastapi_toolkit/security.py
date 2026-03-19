@@ -1,6 +1,5 @@
 # Standard Library
 import enum
-from typing import Literal
 
 # Third Party Library
 from fastapi import (
