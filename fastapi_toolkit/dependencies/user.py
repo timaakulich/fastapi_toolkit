@@ -26,7 +26,7 @@ def get_user_dependency(
         alg_dependency: Callable[..., str | Awaitable[str]],
         project_dependency: Callable[..., str | Awaitable[str]],
         user_model: type[T],
-        token_validator: Callable[[T], None | Awaitable[None]] | None = None,
+        token_validator_dependency: Callable[..., Callable[[T], None | Awaitable[None]] | Awaitable[Callable[[T], None | Awaitable[None]] | None] | None],
 ) -> Callable[..., Awaitable[T]]:
     async def get_user(
             security_scopes: SecurityScopes,
@@ -36,6 +36,7 @@ def get_user_dependency(
             jwt_secret: str = Depends(jwt_secret_dependency),
             alg: str = Depends(alg_dependency),
             project: str = Depends(project_dependency),
+            token_validator: Callable[[T], None | Awaitable[None]] | None = Depends(token_validator_dependency),
     ) -> T:
         try:
             decoded_token = jwt.decode(auth.credentials, jwt_secret, algorithms=[alg])
