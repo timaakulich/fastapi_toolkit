@@ -1,6 +1,7 @@
 # Standard Library
 import builtins
 from functools import reduce
+from typing import Iterable
 
 # Third Party Library
 from sqlalchemy import delete, func, select, update
@@ -112,13 +113,18 @@ class BaseCRUD:
         condition,
         session=None,
         commit=True,
+        returning_columns: builtins.list | None = None,
         **kwargs,
-    ):
+    ) -> Iterable[tuple] | None:
         async with async_session(session, database=self.database) as session:
             query = update(self.model).where(condition).values(**kwargs)
+            if returning_columns:
+                query = query.returning(*returning_columns)
             result = await session.execute(query)
             if commit:
                 await session.commit()
+            if returning_columns is not None:
+                return result.fetchall()
             return result
 
     async def delete(
