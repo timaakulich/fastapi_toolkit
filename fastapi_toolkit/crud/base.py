@@ -1,7 +1,7 @@
 # Standard Library
 import builtins
+from collections.abc import Iterable
 from functools import reduce
-from typing import Iterable
 
 # Third Party Library
 from sqlalchemy import delete, func, select, update
