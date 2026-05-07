@@ -94,9 +94,9 @@ class SecretSettings(PydanticSettings):
         for key, value in self.model_dump(exclude_unset=True).items():
             if isinstance(value, SecretStr):
                 value = value.get_secret_value()
-            if isinstance(value, (set, frozenset)):
+            if isinstance(value, set | frozenset):
                 value = list(value)
-            if isinstance(value, (dict, list)):
+            if isinstance(value, dict | list):
                 value = json.dumps(value)
             elif not isinstance(value, str):
                 value = json.dumps(value)

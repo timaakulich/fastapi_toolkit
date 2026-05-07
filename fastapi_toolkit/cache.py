@@ -64,7 +64,7 @@ class RedisBackend(SecretCacheBackend[T]):
 
     def __init__(self) -> None:
         try:
-            import redis.asyncio  # noqa: F401
+            import redis.asyncio
         except ImportError as exc:
             raise ImportError(
                 "redis is required for RedisBackend. "
