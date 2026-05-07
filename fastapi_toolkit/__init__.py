@@ -1,3 +1,4 @@
+from fastapi_toolkit.cache import InMemoryBackend, RedisBackend, SecretCacheBackend
 from fastapi_toolkit.crud import BaseCRUD
 from fastapi_toolkit.db import async_session, create_engine, init_db
 from fastapi_toolkit.db.base import BaseModel
@@ -8,6 +9,9 @@ __all__ = (
     "BaseModel",
     "BaseSettings",
     "EscapedSecretStr",
+    "InMemoryBackend",
+    "RedisBackend",
+    "SecretCacheBackend",
     "SecretSettings",
     "async_session",
     "create_engine",

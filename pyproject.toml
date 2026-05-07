@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "fastapi-toolkit"
-version = "0.1.4"
+version = "0.1.5"
 description = "Common toolkit for FastAPI + SQLAlchemy projects: async DB sessions, base CRUD, settings with AWS Secrets Manager"
 readme = "README.md"
 license = "MIT"
@@ -45,6 +45,9 @@ dependencies = [
 [project.optional-dependencies]
 aws = [
     "botocore>=1.30.0",
+]
+redis = [
+    "redis>=4.2.0",
 ]
 dev = [
     "pytest>=8.0.0",
